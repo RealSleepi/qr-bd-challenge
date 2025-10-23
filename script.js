@@ -2,10 +2,18 @@ const hashedAnswer =
   '5891562f84bae567ec51dad9e4ce4333d4e297c2e01560c4ac2d14ac2ec1820b63b4af49426f753353fe14c8839361ea1da53cfefde133b69ac92db41a1a1bfb';
 
 const codeInput = document.getElementById('codeInput');
-const redeemButton = document.getElementById('redeemButton');
+const revealButton = document.getElementById('revealButton');
 const feedback = document.getElementById('feedback');
 const celebration = document.getElementById('celebration');
 const confettiContainer = celebration.querySelector('.confetti');
+const prizeElement = celebration.querySelector('.prize');
+
+const encryptedPrize = {
+  iv: 'HwHkrw2P8+8FhJQI',
+  data:
+    'RdwZ8BTIl5YBpetNgbdYKmTtnLFXgoaPsMSV/MSlqkxjK0Hr4OBGVLZM1c+idLryp3GC7ZtZZG793s/OHwAsmqDF8jj7neZh06i1mS9da42tKsTjIh+6YdngAFCIl7BTg0ocsRawlvM='
+};
+const prizeKeySeed = hashedAnswer.slice(0, 64);
 
 const confettiPalette = [
   '#ff7a85',
@@ -21,7 +29,7 @@ const hasSubtleCrypto =
   typeof window.crypto !== 'undefined' &&
   typeof window.crypto.subtle !== 'undefined';
 
-redeemButton.addEventListener('click', () => {
+revealButton.addEventListener('click', () => {
   verifyCode().catch(() => {
     showMessage('Something went wrong. Please try again.', true);
   });
@@ -30,14 +38,14 @@ redeemButton.addEventListener('click', () => {
 codeInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
-    redeemButton.click();
+    revealButton.click();
   }
 });
 
 if (!hasSubtleCrypto) {
   showMessage('This browser cannot verify the code. Try a modern browser.', true);
   codeInput.disabled = true;
-  redeemButton.disabled = true;
+  revealButton.disabled = true;
 }
 
 async function verifyCode() {
@@ -55,7 +63,7 @@ async function verifyCode() {
   const hashed = await sha512(normalized);
 
   if (hashed === hashedAnswer) {
-    celebrate();
+    await celebrate();
   } else {
     showMessage('That code is not quite right. Keep trying!', true);
   }
@@ -79,30 +87,84 @@ function showMessage(text, isError = false) {
   feedback.style.color = isError ? '#e12d39' : '#1f2933';
 }
 
-function celebrate() {
+async function celebrate() {
   document.body.classList.add('success');
   showMessage('');
   codeInput.disabled = true;
-  redeemButton.disabled = true;
+  revealButton.disabled = true;
   celebration.setAttribute('aria-hidden', 'false');
   celebration.classList.add('visible');
+  await revealPrize();
   launchConfetti();
 }
 
 function launchConfetti() {
   confettiContainer.innerHTML = '';
-  const totalPieces = 160;
+  const totalPieces = 320;
 
   for (let i = 0; i < totalPieces; i += 1) {
     const piece = document.createElement('span');
     piece.className = 'confetti-piece';
     piece.style.backgroundColor = confettiPalette[i % confettiPalette.length];
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.animationDelay = `${Math.random() * 1.5}s`;
-    piece.style.animationDuration = `${4 + Math.random() * 3}s`;
-    piece.style.setProperty('--x-start', `${(Math.random() * 60 - 30).toFixed(2)}vw`);
-    piece.style.setProperty('--x-end', `${(Math.random() * 60 - 30).toFixed(2)}vw`);
-    piece.style.setProperty('--rotation', `${Math.random() * 720 - 360}deg`);
+    piece.style.width = `${6 + Math.random() * 8}px`;
+    piece.style.height = `${12 + Math.random() * 10}px`;
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 18 + Math.random() * 34;
+
+    piece.style.setProperty('--translate-x', `${Math.cos(angle) * distance}vmax`);
+    piece.style.setProperty('--translate-y', `${Math.sin(angle) * distance}vmax`);
+    piece.style.setProperty('--scale', `${0.8 + Math.random() * 0.7}`);
+    piece.style.setProperty('--spin', `${Math.random() * 1440 - 720}deg`);
+    piece.style.setProperty('--duration', `${0.45 + Math.random() * 0.4}s`);
+    piece.style.animationDelay = `${Math.random() * 0.12}s`;
+
     confettiContainer.appendChild(piece);
   }
+}
+
+async function revealPrize() {
+  if (!hasSubtleCrypto) {
+    prizeElement.textContent = 'Your surprise is unlocked!';
+    return;
+  }
+
+  try {
+    const key = await importPrizeKey();
+    const decrypted = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: base64ToBytes(encryptedPrize.iv) },
+      key,
+      base64ToBytes(encryptedPrize.data)
+    );
+    const message = new TextDecoder().decode(decrypted);
+    prizeElement.textContent = message;
+  } catch (error) {
+    prizeElement.textContent = 'Your surprise is unlocked!';
+  }
+}
+
+function base64ToBytes(value) {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+async function importPrizeKey() {
+  const keyData = hexToBytes(prizeKeySeed);
+  return crypto.subtle.importKey('raw', keyData, 'AES-GCM', false, ['decrypt']);
+}
+
+function hexToBytes(hex) {
+  const cleaned = hex.trim();
+  if (cleaned.length % 2 !== 0) {
+    throw new Error('Invalid hex string');
+  }
+  const array = new Uint8Array(cleaned.length / 2);
+  for (let i = 0; i < array.length; i += 1) {
+    array[i] = parseInt(cleaned.substr(i * 2, 2), 16);
+  }
+  return array;
 }
