@@ -43,7 +43,7 @@ codeInput.addEventListener('keydown', (event) => {
 });
 
 if (!hasSubtleCrypto) {
-  showMessage('This browser cannot verify the code. Try a modern browser.', true);
+  showMessage('This browser cannot verify the code. Try a different browser.', true);
   codeInput.disabled = true;
   revealButton.disabled = true;
 }
@@ -65,7 +65,7 @@ async function verifyCode() {
   if (hashed === hashedAnswer) {
     await celebrate();
   } else {
-    showMessage('That code is not quite right. Keep trying!', true);
+    showMessage('Our analysts were not able to verify your data. Keep trying!', true);
   }
 }
 
@@ -125,7 +125,7 @@ function launchConfetti() {
 
 async function revealPrize() {
   if (!hasSubtleCrypto) {
-    prizeElement.textContent = 'Your surprise is unlocked!';
+    prizeElement.textContent = 'Loading...';
     return;
   }
 
@@ -139,7 +139,7 @@ async function revealPrize() {
     const message = new TextDecoder().decode(decrypted);
     prizeElement.textContent = message;
   } catch (error) {
-    prizeElement.textContent = 'Your surprise is unlocked!';
+    prizeElement.textContent = 'Loading...';
   }
 }
 
