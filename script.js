@@ -16,12 +16,12 @@ const encryptedPrize = {
 const prizeKeySeed = hashedAnswer.slice(0, 64);
 
 const confettiPalette = [
-  '#ff7a85',
-  '#ffd166',
-  '#9c5cf7',
-  '#5c6ac4',
-  '#2ec4b6',
-  '#ff9f1c'
+  '#39ff14',
+  '#2bff88',
+  '#00ffd1',
+  '#26ffe6',
+  '#f5ff7d',
+  '#ffffff'
 ];
 
 const hasSubtleCrypto =
@@ -43,7 +43,7 @@ codeInput.addEventListener('keydown', (event) => {
 });
 
 if (!hasSubtleCrypto) {
-  showMessage('This browser cannot verify the code. Try a modern browser.', true);
+  showMessage('This browser cannot verify the code. Try a different browser.', true);
   codeInput.disabled = true;
   revealButton.disabled = true;
 }
@@ -65,7 +65,7 @@ async function verifyCode() {
   if (hashed === hashedAnswer) {
     await celebrate();
   } else {
-    showMessage('That code is not quite right. Keep trying!', true);
+    showMessage('Our analysts were not able to verify your data. Keep trying!', true);
   }
 }
 
@@ -84,7 +84,7 @@ function bufferToHex(buffer) {
 
 function showMessage(text, isError = false) {
   feedback.textContent = text;
-  feedback.style.color = isError ? '#e12d39' : '#1f2933';
+  feedback.style.color = isError ? 'var(--error)' : 'var(--accent-soft)';
 }
 
 async function celebrate() {
@@ -125,7 +125,7 @@ function launchConfetti() {
 
 async function revealPrize() {
   if (!hasSubtleCrypto) {
-    prizeElement.textContent = 'Your surprise is unlocked!';
+    prizeElement.textContent = 'Loading...';
     return;
   }
 
@@ -139,7 +139,7 @@ async function revealPrize() {
     const message = new TextDecoder().decode(decrypted);
     prizeElement.textContent = message;
   } catch (error) {
-    prizeElement.textContent = 'Your surprise is unlocked!';
+    prizeElement.textContent = 'Loading...';
   }
 }
 

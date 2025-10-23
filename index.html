@@ -3,27 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Birthday Challenge</title>
+    <title>Agent K2 Secure Upload Server</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="card" aria-live="polite">
-      <h1 class="title">Birthday Challenge</h1>
+      <div class="terminal-header">
+        <h1 class="title">AGENT K2 SECURE UPLOAD SERVER</h1>
+        <p class="subtitle">UPLOAD DATA</p>
+      </div>
       <p class="instructions">
-        Enter the secret code to unlock your birthday surprise.
+        Securely submit recovered data here
       </p>
-      <label class="sr-only" for="codeInput">Secret code</label>
+      <label class="sr-only" for="codeInput">Insert Data</label>
       <input
         id="codeInput"
         class="code-input"
         type="text"
-        placeholder="Enter code"
+        placeholder="RECOVERED DATA"
         autocomplete="off"
         spellcheck="false"
         aria-describedby="feedback"
       />
       <button id="revealButton" class="reveal-button" type="button">
-        Reveal
+        UPLOAD
       </button>
       <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
     </main>
