@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent K2 Secure Upload Server</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="card" aria-live="polite">
+      <div class="terminal-header">
+        <h1 class="title">AGENT K2 SECURE UPLOAD SERVER</h1>
+        <p class="subtitle">UPLOAD DATA</p>
+      </div>
+      <p class="instructions">
+        Authentication required. Provide recovered access token for verification.
+      </p>
+      <label class="sr-only" for="codeInput">Secret code</label>
+      <input
+        id="codeInput"
+        class="code-input"
+        type="text"
+        placeholder="ACCESS TOKEN"
+        autocomplete="off"
+        spellcheck="false"
+        aria-describedby="feedback"
+      />
+      <button id="revealButton" class="reveal-button" type="button">
+        Reveal
+      </button>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    </main>
+
+    <section id="celebration" class="celebration" aria-hidden="true">
+      <div class="confetti" aria-hidden="true"></div>
+      <div class="message">
+        <h2 class="headline">Happy 10th!</h2>
+        <div class="cake" role="img" aria-label="birthday cake">🎂</div>
+        <p class="prize" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
