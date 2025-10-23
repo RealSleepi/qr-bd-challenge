@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Challenge</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="card" aria-live="polite">
+      <h1 class="title">Birthday Challenge</h1>
+      <p class="instructions">
+        Enter the secret code to unlock your birthday surprise.
+      </p>
+      <label class="sr-only" for="codeInput">Secret code</label>
+      <input
+        id="codeInput"
+        class="code-input"
+        type="text"
+        placeholder="Enter code"
+        autocomplete="off"
+        spellcheck="false"
+        aria-describedby="feedback"
+      />
+      <button id="redeemButton" class="redeem-button" type="button">
+        Redeem
+      </button>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    </main>
+
+    <section id="celebration" class="celebration" aria-hidden="true">
+      <div class="confetti" aria-hidden="true"></div>
+      <div class="message">
+        <h2>Happy 10th! <span role="img" aria-label="birthday cake">🎂</span></h2>
+        <p class="prize">
+          congratulations, you have won a $100 shopping spree at micro center
+          with your brother (=
+        </p>
+      </div>
+    </section>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
