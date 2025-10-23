@@ -1,0 +1,175 @@
+:root {
+  color-scheme: light;
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #ffe6f7, #f2f7ff 55%, #d9e8ff);
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: inherit;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+
+body.success .card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  pointer-events: none;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: #243b53;
+}
+
+.instructions {
+  margin: 1rem auto 2rem;
+  color: #516c8a;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.code-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid rgba(36, 59, 83, 0.2);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: #5c6ac4;
+  box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.2);
+}
+
+.redeem-button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7a85, #ffd166);
+  color: #1f2933;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.redeem-button:active {
+  transform: scale(0.97);
+}
+
+.redeem-button:hover,
+.redeem-button:focus-visible {
+  box-shadow: 0 12px 26px rgba(255, 122, 133, 0.35);
+  outline: none;
+}
+
+.feedback {
+  min-height: 1.5rem;
+  margin-top: 1rem;
+  color: #e12d39;
+  font-weight: 600;
+}
+
+body.success .feedback {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: rgba(15, 23, 42, 0.88);
+  color: white;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 400ms ease;
+}
+
+.celebration.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.celebration .message h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  letter-spacing: 1px;
+}
+
+.celebration .prize {
+  max-width: min(90vw, 520px);
+  margin: 1rem auto 0;
+  font-size: clamp(1.05rem, 3vw, 1.5rem);
+  line-height: 1.6;
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 12px;
+  height: 18px;
+  opacity: 0;
+  border-radius: 4px;
+  transform: rotate(0deg);
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translate3d(var(--x-start), -20%, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--x-end), 120%, 0) rotate(var(--rotation));
+    opacity: 0;
+  }
+}
